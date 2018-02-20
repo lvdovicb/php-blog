@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <a href="{{ path_for('index') }}">Back</a>
+
+    <form action="{{ path_for('addperson')}}" method="POST">
+        <div class="form-group row">
+            <label for="name" class="col-4 col-form-label">Name</label>
+            <div class="col-8">
+                <input id="name" name="name" placeholder="name" type="text" class="form-control here">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="birthdate" class="col-4 col-form-label">Birth date</label>
+            <div class="col-8">
+                <input id="birthdate" name="birthdate" type="date" class="form-control here">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="gender" class="col-4 col-form-label">Gender</label>
+            <div class="col-8">
+                <select id="gender" name="gender" class="custom-select">
+                    <option value="0">Man</option>
+                    <option value="1">Woman</option>
+                    <option value="2">Genderfluid</option>
+                    <option value="3">Agender</option>
+                    <option value="4">Other</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="offset-4 col-8">
+                <button name="submit" type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </form>
+
+    {% if newId %}
+    <p>You successfuly added a new person with id {{newId}}</p>
+    {% endif %}
+
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
+        crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

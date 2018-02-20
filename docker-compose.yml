@@ -1,0 +1,41 @@
+version: "3.4"
+services:
+  nginx:
+    image: nginx
+    volumes: 
+      - ./nginx:/etc/nginx/conf.d:ro
+      - ./default:/var/www/default:ro
+    ports:
+      - "80:80"
+    links:
+      - php
+      - phpmyadmin
+  php:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    volumes:
+      - ./default:/var/www/default
+    links:
+      - mysql
+    environment:
+      SQL_PASSWORD: root
+      SQL_USER: root
+      SQL_DATABASE: db
+      SQL_HOST: mysql
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    links:
+      - mysql
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+    ports:
+      - "8080:80"
+  mysql:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db
+    volumes:
+      - ./db:/var/lib/mysql

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>My Blog Project</title>
+    <link href='//fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
+    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+</head>
+
+<body>
+    <h1>My Blog Project</h1>
+
+
+    <a href="{{ path_for('adduser') }}">Add User</a>
+    <table class="table">
+        <thead class="thead-default">
+            <tr>
+                <th> ID </th>
+                <th> Name </th>
+                <th> Email</th>
+            
+                <th>Update</th>
+                <th>Delete</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <th scope="row">{{user.id}}</th>
+                <td>{{user.name}}</td>
+                <td>{{user.email}}</td>
+            
+                <td>
+                    <a href="{{ path_for('updateuser', {'id': user.id}) }}">
+                        <i class="far fa-edit"></i>
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ path_for('deleteuser', {'id': user.id}) }}">
+                        <i class="fas fa-trash-alt"></i>
+                    </a>
+                </td>
+            </tr>
+
+            {% endfor %}
+        </tbody>
+    </table>
+    
+
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
+        crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
