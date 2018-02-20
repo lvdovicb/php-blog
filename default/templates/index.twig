@@ -12,17 +12,31 @@
     <h1>My Blog Project</h1>
 
 
-    <a href="{{ path_for('adduser') }}">Add User</a>
+    {% if currUser %}
+    <p style="font-weight:700;font-size:30px">Welcome {{currUser.name}} !</p>  
+    <a href="{{ path_for('logout') }}">
+    <button type="submit"> Log Out </button>
+    </a>
+    <a href="">
+    <button type="submit"> Create a post </button>
+    </a>
+    {% else %}
+    <a href="{{ path_for('login') }}"><button>Login</button> </a>
+    <a href="{{ path_for('adduser') }}">
+        <button type="submit">Sign Up</button>
+    </a>
+    {% endif %}
+
+
     <table class="table">
         <thead class="thead-default">
             <tr>
                 <th> ID </th>
                 <th> Name </th>
-                <th> Email</th>
+                {# <th> Email</th> #}
             
-                <th>Update</th>
+                <th>Update Infos</th>
                 <th>Delete</th>
-                
             </tr>
         </thead>
         <tbody>
@@ -30,7 +44,7 @@
             <tr>
                 <th scope="row">{{user.id}}</th>
                 <td>{{user.name}}</td>
-                <td>{{user.email}}</td>
+                {# <td>{{user.email}}</td> #}
             
                 <td>
                     <a href="{{ path_for('updateuser', {'id': user.id}) }}">

@@ -4,6 +4,8 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use simplon\entities\User;
 use simplon\dao\DaoUser;
+use simplon\entities\posts;
+use simplon\dao\DaoPost;
 
 // Routes
 
@@ -15,7 +17,7 @@ $app->get('/', function (Request $request, Response $response, array $args) {
     $users = $dao->getAll();
     //On passe les persons à la vue index.twig
     return $this->view->render($response, 'index.twig', [
-        'users' => $users
+        'users' => $users, 'currUser' => $_SESSION['user']
     ]);
 })->setName('index');
 
@@ -35,9 +37,8 @@ $app->post('/adduser', function (Request $request, Response $response, array $ar
     //On utilise la méthode add du DAO en lui donnant la Person qu'on vient de créer
     $dao->add($newUser);
     //On affiche la même vue que la route en get
-    return $this->view->render($response, 'adduser.twig', [
-        'newId' => $newUser->getId()
-    ]);
+    $redirectUrl = $this->router->pathFor('index');
+    return $response->withRedirect($redirectUrl);
 })->setName('adduser');
 
 
@@ -50,8 +51,7 @@ $app->get('/updateuser/{id}', function (Request $request, Response $response, ar
     // On affiche la vue du formulaire d'update d'une peronne
     return $this->view->render($response, 'updateuser.twig', [
         'user' => $user
-    ]);
-    
+    ]); 
 })->setName('updateuser');
 
 $app->post('/updateuser/{id}', function (Request $request, Response $response, array $args) {
@@ -83,3 +83,38 @@ $app->get('/deleteuser/{id}', function (Request $request, Response $response, ar
     //On redirige l'utilisateur sur la page d'accueil
     return $response->withRedirect($redirectUrl);
 })->setName('deleteuser');
+
+
+
+    // LOGIN
+
+$app->get('/login', function (Request $request, Response $response, array $args) {
+    return $this->view->render($response, 'login.twig');   
+})->setName('login');
+
+$app->post('/login', function (Request $request, Response $response, array $args) {
+    $dao = new DaoUser();
+    $form = $request->getParsedBody();
+    $user = $dao->getEmail($form['email']);
+
+    $form['isLogged'] = (!empty($user) && $form['email'] === $user->getEmail() && $form['password'] === $user->getPassword());
+    $_SESSION['user']= $user;
+    if ($form['isLogged']) {
+        $redirectUrl = $this->router->pathFor('index',[
+            'id' => $user->getId()
+            ]);
+        return $response->withRedirect($redirectUrl);
+    } else {
+        return $this->view->render($response, 'index.twig', [
+            'user' => $user
+        ]);
+    }
+})->setName('login');
+
+$app->get('/logout', function (Request $request, Response $response, array $args) {
+    session_destroy();
+    $redirectUrl = $this->router->pathFor('index');
+    return $response->withRedirect($redirectUrl);
+})->setName('logout');
+
+

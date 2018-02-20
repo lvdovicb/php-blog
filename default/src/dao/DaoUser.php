@@ -123,6 +123,30 @@ class DaoUser {
      * Méthode permettant de faire persister en base de données une 
      * instance de Person passée en argument.
      */
+
+    public function getEmail(string $email) {
+        
+        try {
+            $query = Connect::getInstance()->prepare('SELECT * FROM users WHERE email = :email');
+           
+            $query->bindValue(':email', $email, \PDO::PARAM_STR);
+            $query->execute();
+            if($row = $query->fetch()) {
+                //On crée une instance de User
+                $user = new User($row['name'], 
+                            $row['email'], 
+                            $row['password'],
+                            $row['id']);
+                //On return ce User
+                return $user;
+            }
+        }catch(\PDOException $e) {
+            echo $e;
+        }
+        return null;
+    }
+
+
     public function add(User $user) {
         
         try {
