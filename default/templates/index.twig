@@ -13,20 +13,15 @@
 
 
     {% if currUser %}
-    <p style="font-weight:700;font-size:30px">Welcome {{currUser.name}} !</p>  
-    <a href="{{ path_for('logout') }}">
-    <button type="submit"> Log Out </button>
-    </a>
-    <a href="">
-    <button type="submit"> Create a post </button>
-    </a>
-    {% else %}
-    <a href="{{ path_for('login') }}"><button>Login</button> </a>
-    <a href="{{ path_for('adduser') }}">
-        <button type="submit">Sign Up</button>
-    </a>
-    {% endif %}
 
+    <p style="font-weight:700;font-size:30px">Welcome {{currUser.name}} !</p>  
+    <a href="{{ path_for('logout') }}"><button type="submit"> Log Out </button></a>
+    <a href="{{ path_for('addpost') }}"><button type="submit"> Create a post </button></a>
+    
+    {% else %}
+
+    <a href="{{ path_for('login') }}"><button>Login</button> </a>
+    <a href="{{ path_for('adduser') }}"><button type="submit">Sign Up</button></a>
 
     <table class="table">
         <thead class="thead-default">
@@ -61,7 +56,8 @@
             {% endfor %}
         </tbody>
     </table>
-    
+
+    {% endif %}
 
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"

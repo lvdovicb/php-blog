@@ -1,10 +1,10 @@
 <?php
 
 namespace simplon\dao;
-use simplon\entities\posts;
+use simplon\entities\Post;
 use simplon\dao\Connect;
 
-class Post {
+class DaoPost {
 
   public function getAll():array {
     $tab = [];
@@ -35,6 +35,7 @@ class Post {
           SQL.
           */
           $post = new Post($row['title'], 
+                            $row['content'],
                            $row['id']);
           //On ajoute la person créée à notre tableau
           $tab[] = $post;
@@ -78,7 +79,8 @@ public function getById(int $id) {
       //Si le fetch nous renvoie quelque chose
       if($row = $query->fetch()) {
           //On crée une instance de Person
-          $post = new Post ($row['name'], 
+          $post = new Post ($row['title'], 
+                            $row['content'], 
                             $row['id']);
           //On return cette Person
           return $post;
@@ -97,17 +99,19 @@ public function getById(int $id) {
 * Méthode permettant de faire persister en base de données une 
 * instance de Person passée en argument.
 */
-public function add(Post $post) {
+public function add(Post $post, $iduser) {
   
   try {
       //On prépare notre requête, avec les divers placeholders
-      $query = Connect::getInstance()->prepare('INSERT INTO posts (title) VALUES (:title)');
+      $query = Connect::getInstance()->prepare('INSERT INTO posts (title, content, id_users) VALUES (:title, :content, :id_users)');
       /**
        * On bind les différentes values qu'on récupère de l'instance
        * de Person qui nous est passée en argument, via ses
        * accesseurs get*()
        */
-      $query->bindValue(':title',$user->getName(),\PDO::PARAM_STR);
+      $query->bindValue(':title',$post->getTitle(),\PDO::PARAM_STR);
+      $query->bindValue(':content',$post->getContent(),\PDO::PARAM_STR);
+      $query->bindValue(':id_users',$iduser,\PDO::PARAM_INT);
 
       $query->execute();
       /**

@@ -4,7 +4,7 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use simplon\entities\User;
 use simplon\dao\DaoUser;
-use simplon\entities\posts;
+use simplon\entities\Post;
 use simplon\dao\DaoPost;
 
 // Routes
@@ -111,10 +111,30 @@ $app->post('/login', function (Request $request, Response $response, array $args
     }
 })->setName('login');
 
+
+        // LOG OUT
+
 $app->get('/logout', function (Request $request, Response $response, array $args) {
     session_destroy();
     $redirectUrl = $this->router->pathFor('index');
     return $response->withRedirect($redirectUrl);
 })->setName('logout');
+
+
+        // ADD POST
+
+$app->get('/addpost', function (Request $request, Response $response, array $args) {
+    return $this->view->render($response, 'addpost.twig');   
+})->setName('addpost');
+    
+$app->post('/addpost', function (Request $request, Response $response, array $args) {
+        $form = $request->getParsedBody();
+        $newPost = new Post($form['title'], $form['content']);
+        $newDaoPost = new DaoPost();
+        $newDaoPost->add($newPost, $_SESSION['user']->getId());
+        $redirectUrl = $this->router->pathFor('index');
+        return $response->withRedirect($redirectUrl);
+})->setName('addpost');
+
 
 
